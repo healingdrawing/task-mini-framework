@@ -1,0 +1,6 @@
+AddType text/html .html
+AddType text/plain .txt
+AddType application/octet-stream .bin .exe .dll
+AddType image/jpeg .jpeg .jpg
+AddType image/png .png
+AddType image/gif .gif
