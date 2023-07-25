@@ -1,4 +1,3 @@
-// events.ts
 export class Events {
   private events: Record<string, Function[]>;
 

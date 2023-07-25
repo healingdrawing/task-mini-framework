@@ -1,4 +1,3 @@
-// index.ts
 import { router, store, events } from './framework';
 import { todoService, Todo } from './todo';
 
@@ -30,7 +29,7 @@ function renderTodos() {
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.checked = todo.completed;
-      events.on('change', () => {
+      checkbox.addEventListener('change', () => {
         todoService.toggleCompleted(todo.id);
       });
       todoItem.appendChild(checkbox);
@@ -39,10 +38,10 @@ function renderTodos() {
       textInput.type = 'text';
       textInput.value = todo.text;
       textInput.readOnly = true;
-      events.on('dblclick', () => {
+      textInput.addEventListener('dblclick', () => {
         textInput.readOnly = false;
       });
-      events.on('blur', () => {
+      textInput.addEventListener('blur', () => {
         todoService.editTodo(todo.id, textInput.value);
         textInput.readOnly = true;
       });
@@ -50,7 +49,7 @@ function renderTodos() {
 
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
-      events.on('click', () => {
+      deleteButton.addEventListener('click', () => {
         todoService.removeTodo(todo.id);
       });
       todoItem.appendChild(deleteButton);
@@ -60,12 +59,11 @@ function renderTodos() {
   }
 }
 
-
 // Add todo to list (html "input" type=text, which add new todo after press enter)
 const addTodoInput = document.getElementById('add-todo-input') as HTMLInputElement;
 if (addTodoInput) {
-  events.on('keypress', (event: KeyboardEvent) => {
-    if (event.key === 'Enter' && event.target === addTodoInput) {
+  addTodoInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
       const text = addTodoInput.value;
       if (text.trim() !== '') {
         todoService.addTodo(text);
@@ -80,14 +78,16 @@ const allButton = document.getElementById('all-button');
 const activeButton = document.getElementById('active-button');
 const completedButton = document.getElementById('completed-button');
 if (allButton && activeButton && completedButton) {
-  events.on('click', (event: Event) => {
-    if (event.target === allButton) {
-      store.setState({ filter: 'all' });
-    } else if (event.target === activeButton) {
-      store.setState({ filter: 'active' });
-    } else if (event.target === completedButton) {
-      store.setState({ filter: 'completed' });
-    }
+  allButton.addEventListener('click', () => {
+    store.setState({ filter: 'all' });
+  });
+
+  activeButton.addEventListener('click', () => {
+    store.setState({ filter: 'active' });
+  });
+
+  completedButton.addEventListener('click', () => {
+    store.setState({ filter: 'completed' });
   });
 }
 
