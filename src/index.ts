@@ -17,10 +17,18 @@ function getFilteredTodos(): Todo[] {
 
 // Display todo's list on the screen
 function renderTodos() {
+
+  const all_todos = todoService.getTodos();
+  const footer = document.querySelector("footer") as HTMLElement;
+  if (all_todos.length > 0) {
+    footer.style.display = "block";
+  } else {
+    footer.style.display = "none";
+  }
+
   const counted_todos = todoService.getTodos().filter((todo) => !todo.completed);
   const todoCounter = document.getElementById('todo-counter');
   if (todoCounter) todoCounter.innerText = `${counted_todos.length} items left`;
-
 
   const todos = getFilteredTodos();
 
