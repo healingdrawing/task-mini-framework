@@ -1,19 +1,37 @@
 export class Events {
-  private events: Record<string, Function[]>;
+  private eventMap: Map<EventTarget, Map<string, Function[]>>;
 
   constructor() {
-    this.events = {};
+    this.eventMap = new Map();
   }
 
-  on(eventName: string, callback: Function) {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
+  on(eventName: string, listenTo: EventTarget, callback: Function) {
+    let callbacksMap = this.eventMap.get(listenTo);
+    if (!callbacksMap) {
+      callbacksMap = new Map();
+      this.eventMap.set(listenTo, callbacksMap);
     }
-    this.events[eventName].push(callback);
+
+    let callbacks = callbacksMap.get(eventName);
+    if (!callbacks) {
+      callbacks = [];
+      callbacksMap.set(eventName, callbacks);
+      listenTo.addEventListener(eventName, (event) => {
+        const callbacks = callbacksMap?.get(eventName);
+        if (callbacks) {
+          callbacks.forEach((callback) => callback(event));
+        }
+      });
+    }
+
+    callbacks.push(callback);
   }
 
-  emit(eventName: string, data?: any) {
-    const callbacks = this.events[eventName];
+  emit(eventName: string, listenTo: EventTarget, data?: any) {
+    const callbacksMap = this.eventMap.get(listenTo);
+    if (!callbacksMap) return;
+
+    const callbacks = callbacksMap.get(eventName);
     if (callbacks) {
       callbacks.forEach((callback) => callback(data));
     }
