@@ -42,6 +42,15 @@ export class TodoService {
     store.setState({ todos: this.todos });
   }
 
+  clearCompleted() {
+    this.todos = this.todos.filter((todo) => !todo.completed);
+    store.setState({ todos: this.todos });
+  }
+
+  getCompletedCount(): number {
+    return this.todos.filter((todo) => todo.completed).length;
+  }
+
   getTodos(): Todo[] {
     return this.todos;
   }

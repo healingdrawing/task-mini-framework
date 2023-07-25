@@ -18,6 +18,18 @@ function getFilteredTodos(): Todo[] {
 // Display todo's list on the screen
 function renderTodos() {
 
+  // Display clear completed button if there are completed todos
+  const clearCompletedButton = document.getElementById('clear-completed-button');
+  if (clearCompletedButton) {
+    const completedCount = todoService.getCompletedCount();
+    if (completedCount > 0) {
+      clearCompletedButton.style.display = 'inline-block';
+    } else {
+      clearCompletedButton.style.display = 'none';
+    }
+  }
+
+  // Display footer if there are todos
   const all_todos = todoService.getTodos();
   const footer = document.querySelector("footer") as HTMLElement;
   if (all_todos.length > 0) {
@@ -120,16 +132,34 @@ const allButton = document.getElementById('all-button');
 const activeButton = document.getElementById('active-button');
 const completedButton = document.getElementById('completed-button');
 if (allButton && activeButton && completedButton) {
-  allButton.addEventListener('click', () => {
+
+  events.on('click', allButton, () => {
     store.setState({ filter: 'all' });
   });
+  // allButton.addEventListener('click', () => {
+  //   store.setState({ filter: 'all' });
+  // });
 
-  activeButton.addEventListener('click', () => {
+  events.on('click', activeButton, () => {
     store.setState({ filter: 'active' });
   });
+  // activeButton.addEventListener('click', () => {
+  //   store.setState({ filter: 'active' });
+  // });
 
-  completedButton.addEventListener('click', () => {
+  events.on('click', completedButton, () => {
     store.setState({ filter: 'completed' });
+  });
+  // completedButton.addEventListener('click', () => {
+  //   store.setState({ filter: 'completed' });
+  // });
+}
+
+// add event listener for clear completed button
+const clearCompletedButton = document.getElementById('clear-completed-button');
+if (clearCompletedButton) {
+  events.on('click', clearCompletedButton, () => {
+    todoService.clearCompleted();
   });
 }
 
