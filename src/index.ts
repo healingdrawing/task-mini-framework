@@ -57,6 +57,7 @@ function renderTodos() {
 
       events.on('change', checkbox, () => {
         todoService.toggleCompleted(todo.id);
+        updateToggleAllCheckbox();
       });
       // checkbox.addEventListener('change', () => {
       //   todoService.toggleCompleted(todo.id);
@@ -91,6 +92,7 @@ function renderTodos() {
 
       events.on('click', deleteButton, () => {
         todoService.removeTodo(todo.id);
+        updateToggleAllCheckbox();
       });
       // deleteButton.addEventListener('click', () => {
       //   todoService.removeTodo(todo.id);
@@ -100,6 +102,39 @@ function renderTodos() {
       todoList.appendChild(todoItem);
     });
   }
+}
+
+// Add event listener for toggle all checkbox
+const toggleAllCheckbox = document.getElementById('toggle-all-checkbox') as HTMLInputElement;
+
+let updatingToggleAll = false; // Flag to prevent change event from individual todos affecting toggleAllCheckbox
+
+// Function to check/uncheck all todo checkboxes
+function toggleAllTodos(checked: boolean) {
+  const todos = todoService.getTodos();
+  todos.forEach((todo) => (todo.completed = checked));
+  updatingToggleAll = true; // Set the flag to true to prevent change event from affecting toggleAllCheckbox
+  toggleAllCheckbox.checked = checked;
+  updatingToggleAll = false; // Reset the flag to false after updating toggleAllCheckbox
+  store.setState({ todos });
+}
+
+if (toggleAllCheckbox) {
+  events.on('change', toggleAllCheckbox, () => {
+    if (!updatingToggleAll) {
+      const checked = toggleAllCheckbox.checked;
+      toggleAllTodos(checked);
+    }
+  });
+}
+
+// Function to check the state of individual todo checkboxes and update the toggleAllCheckbox accordingly
+function updateToggleAllCheckbox() {
+  const todos = todoService.getTodos();
+  const allChecked = todos.every((todo) => todo.completed);
+  updatingToggleAll = true;
+  toggleAllCheckbox.checked = allChecked;
+  updatingToggleAll = false;
 }
 
 // Add todo to list (html "input" type=text, which add new todo after press enter)
@@ -113,6 +148,7 @@ if (addTodoInput) {
         todoService.addTodo(text);
         addTodoInput.value = '';
       }
+      updateToggleAllCheckbox();
     }
   });
 
