@@ -170,21 +170,24 @@ const completedButton = document.getElementById('completed-button');
 if (allButton && activeButton && completedButton) {
 
   events.on('click', allButton, () => {
-    store.setState({ filter: 'all' });
+    router.navigate('/');
+    // store.setState({ filter: 'all' });
   });
   // allButton.addEventListener('click', () => {
   //   store.setState({ filter: 'all' });
   // });
 
   events.on('click', activeButton, () => {
-    store.setState({ filter: 'active' });
+    router.navigate('/active');
+    // store.setState({ filter: 'active' });
   });
   // activeButton.addEventListener('click', () => {
   //   store.setState({ filter: 'active' });
   // });
 
   events.on('click', completedButton, () => {
-    store.setState({ filter: 'completed' });
+    router.navigate('/completed');
+    // store.setState({ filter: 'completed' });
   });
   // completedButton.addEventListener('click', () => {
   //   store.setState({ filter: 'completed' });
