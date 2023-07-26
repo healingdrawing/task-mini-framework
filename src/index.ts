@@ -59,9 +59,6 @@ function renderTodos() {
         todoService.toggleCompleted(todo.id);
         updateToggleAllCheckbox();
       });
-      // checkbox.addEventListener('change', () => {
-      //   todoService.toggleCompleted(todo.id);
-      // });
       todoItem.appendChild(checkbox);
 
       const textInput = document.createElement('input');
@@ -72,19 +69,12 @@ function renderTodos() {
       events.on('dblclick', textInput, () => {
         textInput.readOnly = false;
       });
-      // textInput.addEventListener('dblclick', () => {
-      //   textInput.readOnly = false;
-      // });
-
 
       events.on('blur', textInput, () => {
         todoService.editTodo(todo.id, textInput.value);
         textInput.readOnly = true;
       });
-      // textInput.addEventListener('blur', () => {
-      //   todoService.editTodo(todo.id, textInput.value);
-      //   textInput.readOnly = true;
-      // });
+
       todoItem.appendChild(textInput);
 
       const deleteButton = document.createElement('button');
@@ -94,9 +84,7 @@ function renderTodos() {
         todoService.removeTodo(todo.id);
         updateToggleAllCheckbox();
       });
-      // deleteButton.addEventListener('click', () => {
-      //   todoService.removeTodo(todo.id);
-      // });
+
       todoItem.appendChild(deleteButton);
 
       todoList.appendChild(todoItem);
@@ -151,16 +139,6 @@ if (addTodoInput) {
       updateToggleAllCheckbox();
     }
   });
-
-  // addTodoInput.addEventListener('keypress', (event) => {
-  //   if (event.key === 'Enter') {
-  //     const text = addTodoInput.value;
-  //     if (text.trim() !== '') {
-  //       todoService.addTodo(text);
-  //       addTodoInput.value = '';
-  //     }
-  //   }
-  // });
 }
 
 // Add event listeners for filter buttons
@@ -171,27 +149,16 @@ if (allButton && activeButton && completedButton) {
 
   events.on('click', allButton, () => {
     router.navigate('/');
-    // store.setState({ filter: 'all' });
   });
-  // allButton.addEventListener('click', () => {
-  //   store.setState({ filter: 'all' });
-  // });
 
   events.on('click', activeButton, () => {
     router.navigate('/active');
-    // store.setState({ filter: 'active' });
   });
-  // activeButton.addEventListener('click', () => {
-  //   store.setState({ filter: 'active' });
-  // });
 
   events.on('click', completedButton, () => {
     router.navigate('/completed');
-    // store.setState({ filter: 'completed' });
   });
-  // completedButton.addEventListener('click', () => {
-  //   store.setState({ filter: 'completed' });
-  // });
+
 }
 
 // add event listener for clear completed button
