@@ -21,4 +21,7 @@ or
 or
 - `npm start`  
 or
-- `npm run start`  
+- `npm run start`
+
+## task description and audit questions, on github  
+https://github.com/01-edu/public/tree/master/subjects/mini-framework  
